@@ -1,34 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-class custom_bottom_naiv_bar extends StatefulWidget {
-  const custom_bottom_naiv_bar({Key? key}) : super(key: key);
 
+class BottomNaviBar extends StatefulWidget {
   @override
-  State<custom_bottom_naiv_bar> createState() => _custom_bottom_naiv_barState();
+  _BottomNaviBarState createState() => _BottomNaviBarState();
 }
 
-class _custom_bottom_naiv_barState extends State<custom_bottom_naiv_bar> {
+class _BottomNaviBarState extends State<BottomNaviBar> {
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Home',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 1: Business',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 3: Settings',
-      style: optionStyle,
-    ),
-  ];
+  final List<Widget> _pages = [    HomePage(),    SearchPage(),    ShopPage(),    SettingsPage()  ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -38,32 +19,108 @@ class _custom_bottom_naiv_barState extends State<custom_bottom_naiv_bar> {
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
-          backgroundColor: Colors.red,
+    return Scaffold(
+      body: PageView.builder(
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: _pages.length,
+        itemBuilder: (context, index) => _pages[index],
+        onPageChanged: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        controller: PageController(
+          initialPage: _selectedIndex,
         ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.business),
-          label: 'Business',
-          backgroundColor: Colors.green,
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.school),
-          label: 'School',
-          backgroundColor: Colors.purple,
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.settings),
-          label: 'Settings',
-          backgroundColor: Colors.pink,
-        ),
-      ],
-      currentIndex: _selectedIndex,
-      selectedItemColor: Colors.amber[800],
-      onTap: _onItemTapped,
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: "Search",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shop),
+            label: "Shop",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: "Settings",
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+      ),
     );
   }
 }
+
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'B-Stream',
+          style: TextStyle(fontFamily: "DancingScript"),
+          //style: GoogleFonts.getFont('Lato'),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Official B-Stream Landing App'),
+            ElevatedButton(
+              onPressed: () => context.push("/Settings"),
+              child: const Text("Go to Settings"),
+            ),
+            Text('Official B-Stream Landing App'),
+            ElevatedButton(
+              onPressed: () => context.push("/Settings"),
+              child: const Text("Go to Settings"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class SearchPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Center(
+        child: Text("Search"),
+      ),
+    );
+  }
+}
+
+class ShopPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Center(
+        child: Text("Shop"),
+      ),
+    );
+  }
+}
+
+class SettingsPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Center(
+        child: Text("Settings"),
+      ),
+    );
+  }
+}
+

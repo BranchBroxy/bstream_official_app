@@ -78,7 +78,7 @@ class _RootPageState extends State<RootPage> {
           ],
         ),
       ),
-      bottomNavigationBar: custom_bottom_naiv_bar(),
+      //bottomNavigationBar: BottomNaviBar(),
     );
   }
 }
