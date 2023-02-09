@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'buttom_navigation_bar_class.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -18,6 +19,7 @@ class _SettingsState extends State<Settings> {
           onPressed: () => context.pop(),
         ),
         title: const Text("Seetings Page"),
+
       ),
     );
   }
