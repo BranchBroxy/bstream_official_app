@@ -8,6 +8,7 @@ import "helper_functions.dart";
 import 'info_page.dart';
 import 'HomePageScreen.dart';
 import 'SearchPageScreen.dart';
+import 'ProfilePageScreen.dart';
 
 final GoRouter _router = GoRouter(
   routes: [
@@ -43,7 +44,7 @@ class MyApp extends StatelessWidget {
       },
       title: 'B-Stream',
       theme: ThemeData(
-        primarySwatch: buildMaterialColor(maincolor_2),
+        primarySwatch: buildMaterialColor(maincolor_1),
       ),
     );
   }
@@ -59,14 +60,11 @@ class _RootPageState extends State<RootPage> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.w600);
-  static const List<Widget> _widgetOptions = <Widget>[
+  static List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
     LikeScreen(),
     SearchScreen(),
-    Text(
-      'Profile',
-      style: optionStyle,
-    ),
+    ProfilScreen(),
   ];
 
   @override

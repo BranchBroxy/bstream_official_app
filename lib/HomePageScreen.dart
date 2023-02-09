@@ -1,127 +1,92 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter/services.dart';
-
-import 'package:webview_flutter/webview_flutter.dart';
-import 'package:webview_flutter_android/webview_flutter_android.dart';
-import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
-
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final videoURL = "https://www.youtube.com/watch?v=YMx8Bbev6T4";
-  late YoutubePlayerController _controller;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.w600);
-
   @override
-  void initState() {
-    final videoID = YoutubePlayer.convertUrlToId(videoURL);
-    _controller = YoutubePlayerController(
-        initialVideoId: videoID!,
-        flags: const YoutubePlayerFlags(
-          autoPlay: false,
-        ));
-    super.initState();
-  }
-
   Widget build(BuildContext context) {
     return Scaffold(
-      body: YoutubePlayerBuilder(
-          player: YoutubePlayer(
-            controller: _controller,
-            showVideoProgressIndicator: true,
-            onReady: () => print("Ready"),
-            bottomActions: [
-              CurrentPosition(),
-              ProgressBar(
-                isExpanded: true,
-              ),
-              IconButton(
-                icon: const Icon(
-                  Icons.fullscreen,
-                  color: Colors.white,
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              Container(
+                height: 200,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: NetworkImage(
+                            'https://images.unsplash.com/photo-1675845625579-739b66ee8c2a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80'),
+                        fit: BoxFit.cover)),
+                child: Container(
+                  decoration: BoxDecoration(
+                      gradient:
+                          LinearGradient(begin: Alignment.bottomRight, colors: [
+                    Colors.black.withOpacity(.8),
+                    Colors.black.withOpacity(.0),
+                  ])),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Text("B-Stream",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold)),
+                      SizedBox(height: 20),
+                      Text("Web und App Entwicklung",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                          )),
+                      SizedBox(height: 20),
+                    ],
+                  ),
                 ),
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        FullscreenRoute(controller: _controller),
+              ),
+              Padding(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  children: <Widget>[
+                    Text("Über uns",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
+                    SizedBox(height: 20),
+                    Text(
+                        "B-Stream ist ein Unternehmen, das sich auf die Entwicklung von Web- und App-Lösungen spezialisiert hat. Wir arbeiten mit einer Mannschaft von erfahrenen und talentierten Entwicklern zusammen, um den Bedürfnissen unserer Kunden gerecht zu werden.",
+                        style: TextStyle(
+                          fontSize: 15,
+                        )),
+                    SizedBox(height: 20),
+                    Text("Unsere Dienstleistungen",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
+                    SizedBox(height: 20),
+                    Text(
+                        "Wir bieten eine Vielzahl von Dienstleistungen an, darunter die Entwicklung von benutzerfreundlichen Websites, die Entwicklung von mobilen Apps für iOS und Android sowie die Integration von Datenbanken und APIs.",
+                        style: TextStyle(
+                          fontSize: 15,
+                        )),
+                  ],
+                ),
+              ),
+              Container(
+                height: 750,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(
+                        'https://images.unsplash.com/photo-1675845625579-739b66ee8c2a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80'),
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
             ],
           ),
-          builder: (context, player) {
-            return Column(
-              children: [player],
-            );
-          }),
-    );
-  }
-}
-
-class FullscreenRoute extends StatefulWidget {
-  const FullscreenRoute({Key? key, required this.controller}) : super(key: key);
-
-  final YoutubePlayerController controller;
-
-  @override
-  State<FullscreenRoute> createState() => _FullscreenRouteState();
-}
-
-class _FullscreenRouteState extends State<FullscreenRoute> {
-  @override
-  Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-    ]);
-
-    return Scaffold(
-      body: YoutubePlayerBuilder(
-        player: YoutubePlayer(
-          controller: widget.controller,
-          showVideoProgressIndicator: true,
-          onReady: () => print("Ready"),
-          bottomActions: [
-            CurrentPosition(),
-            ProgressBar(
-              isExpanded: true,
-            ),
-            IconButton(
-              icon: const Icon(
-                Icons.fullscreen,
-                color: Colors.white,
-              ),
-              onPressed: () => Navigator.pop(context),
-            ),
-          ],
-        ),
-        builder: (context, player) => Container(
-          width: double.infinity,
-          height: double.infinity,
-          child: player,
         ),
       ),
     );
   }
-
-  @override
-  void dispose() {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-    ]);
-    super.dispose();
-  }
 }
-
